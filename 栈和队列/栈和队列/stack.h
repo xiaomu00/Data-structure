@@ -20,7 +20,6 @@ typedef  struct stack
 }seqstack;
 
 
-
 void seqstackInit(seqstack *pst);
 bool seqstackFull(seqstack *pst);//ÅÐ¶ÏÊÇ·ñÒç³ö
 bool seqstackEomty(seqstack *pst);//ÅÐ¶ÏÊÇ·ñÎª¿ÕÕ»
@@ -29,21 +28,6 @@ void seqstackPush(seqstack *pst, Elemtype x);//ÈëÕ»
 void seqstackPop(seqstack *pst);//³öÕ»
 void seqstackshow(seqstack *pst);//ÏÔÊ¾
 void Expansion(seqstack *pst);//À©ÈÝ
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 bool seqstackFull(seqstack *pst)
 {
@@ -93,8 +77,6 @@ void seqstackPop(seqstack *pst)
 	seqstackshow(pst);
 }
 
-
-
 //À©ÈÝ
 void Expansion(seqstack *pst)
 {
@@ -104,7 +86,6 @@ void Expansion(seqstack *pst)
 	pst->capcity = pst->capcity + x;
 	printf("À©ÈÝ³É¹¦£¬µ±Ç°ÈÝÁ¿Îª£º%2d \n", pst->capcity);
 }
-
 void seqstackshow(seqstack *pst)
 {	
 	assert(pst != NULL);
@@ -121,5 +102,105 @@ void seqstackshow(seqstack *pst)
 	}
 
 }
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+//Á´Õ»
+
+typedef  struct linkstacknode
+{
+	Elemtype date;
+	struct linkstacknode *next;
+}linkstacknode;
+
+
+typedef struct linkstack
+{
+	linkstacknode *top;
+}linkstack;
+
+
+void linkstackInit(linkstack *pst);
+struct linkstacknode* open_node(Elemtype x);
+bool linkstackEomty(linkstack *pst);//ÅÐ¶ÏÊÇ·ñÎª¿ÕÕ»
+Elemtype linkstackTop(linkstack *pst);//È¡Õ»¶¥ÔªËØ
+void linkstackPush(linkstack *pst, Elemtype x);//ÈëÕ»
+void linkstackPop(linkstack *pst);//³öÕ»
+void linkstackshow(linkstack *pst);//ÏÔÊ¾
+
+void linkstackInit(linkstack *ps)
+{
+	ps->top = (linkstacknode*)malloc(sizeof(linkstacknode));
+	ps->top->date = 0;
+	ps->top->next=NULL;
+}
+
+struct linkstacknode* open_node(Elemtype x)
+{
+	linkstacknode *s = (linkstacknode*)malloc(sizeof(linkstacknode));
+	assert(s!=NULL);
+	s->date = x;
+	s->next = NULL;
+	return s;
+}
+
+//ÈëÕ»
+void linkstackPush(linkstack *pst, Elemtype x)
+{
+	assert(pst!=NULL);
+	linkstacknode *s = open_node(x);
+	s->next = pst->top->next;
+	pst->top->next = s;
+    
+}
+//È¡Õ»¶¥ÔªËØ
+Elemtype linkstackTop(linkstack *pst)
+{
+	assert(pst != NULL);
+	if (pst->top->next == NULL)
+	{
+		return  -1;
+	}
+	return pst->top->next->date;
+}
+//³öÕ»
+void linkstackPop(linkstack *pst)
+{
+	assert(pst != NULL);
+	if (pst->top->next == NULL)
+	{
+		printf("Õ»ÒÑ¿Õ£¡\n");
+		return;
+	}
+	printf("%2d  ³öÕ»£¡\n", linkstackTop(pst));
+	linkstacknode *p = pst->top;
+	pst->top = p->next;
+	free(p);
+	linkstackshow(pst);
+}
+
+
+
+//ÏÔÊ¾
+void linkstackshow(linkstack *pst)
+{
+	assert(pst != NULL);
+	if (pst->top->next == NULL)
+	{
+		printf("¿ÕÕ»£¡\n");
+		return;
+	}
+	linkstacknode *p=(linkstacknode*)malloc(sizeof(linkstacknode));
+	p= pst->top->next;
+	while (p != NULL)
+	{
+		
+		printf("%2d\n",p->date);
+		p = p->next;
+	}
+}
+
 
 #endif /*_STACK_H_*/

@@ -373,13 +373,13 @@
 
 int main()
 {
-	const char s[] = {"abc##de##f##g#h##"};
+	const char s[] = {"abd##eh##i##cf##g##"};
 	BinTree mbt;
 	BinTreeInIt(&mbt);
 	//BinTreeCreate(&mbt);
 	BinTreeCreatestr(&mbt,s);
 	////遍历
-	/*printf("VLR   :");
+	printf("VLR   :");
 	PreOrder(&mbt);
 	printf("\n");
 	printf("LVR   :");
@@ -392,7 +392,11 @@ int main()
 	LevelOrder(&mbt);
 	printf("\n");
 	printf("size=%d\n", BinTreeCount(&mbt));
-	printf("height=%d\n", BinTreeHeight(&mbt));*/
+	printf("height=%d\n", BinTreeHeight(&mbt));
+
+
+	printf("\n\n\n");
+	Wrapprint(&mbt);
 
 	////查找父节点
 	//BinTreeNode* p = BinTreeParent(&mbt, 'a');
@@ -413,12 +417,12 @@ int main()
 	}*/
 
 	////拷贝
-	BinTree bt;
-	BinTreeInIt(&bt);
-	BinTreeCopy(&mbt, &bt);//通过mbt拷贝bt
+	//BinTree bt;
+	//BinTreeInIt(&bt);
+	//BinTreeCopy(&mbt, &bt);//通过mbt拷贝bt
 
 	////判断两二叉树是否相等
-	const char sr[] = { "abc##de##f##G#h##" };
+	/*const char sr[] = { "abc##de##f##G#h##" };
 	BinTree bt1;
 	BinTreeInIt(&bt1);
 	BinTreeCreatestr(&bt1, sr);
@@ -431,6 +435,6 @@ int main()
 	if (BinTreeEqual(&bt, &bt1))
 		printf("bt和bt1相等！\n");
 	else
-		printf("bt和bt1不相等！\n");
+		printf("bt和bt1不相等！\n");*/
 	return 0;
 }

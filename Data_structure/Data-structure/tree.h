@@ -111,6 +111,10 @@ void IneOrder_1(BinTreeNode* t);
 void PosOrder(BinTree *bt);//后序遍历
 void PosOrder_1(BinTreeNode* t);
 void LevelOrder(BinTree *bt);//层次遍历
+void  LevelOrder_1(BinTreeNode* t);
+void Wrapprint(BinTree *bt);//换行打印
+void _Wrapprint(BinTreeNode *t);
+
 ////求二叉树的节点个数及高度
 int BinTreeCount(BinTree *bt);
 int BinTreeCount_1(BinTreeNode *t);
@@ -257,6 +261,52 @@ void  LevelOrder_1(BinTreeNode* t)
 
 	}
 }
+
+//换行打印
+void Wrapprint(BinTree *bt)
+{
+	_Wrapprint(bt->root);
+}
+void _Wrapprint(BinTreeNode *t)
+{
+	if (t != NULL)
+	{
+		int count_next = 0;
+		int count_self = 1;
+		trqueue q;
+		trqueueInit(&q);
+		trqueueEnque(&q, t);
+		while (!empty(&q))
+		{
+			BinTreeNode *p = trqueueTop(&q);
+			trqueueDeque(&q);
+			if (p->leftChild != NULL)
+			{
+				count_next++;
+				trqueueEnque(&q, p->leftChild);
+			}
+				
+			if (p->rightChild != NULL)
+			{
+				count_next++;
+				trqueueEnque(&q, p->rightChild);
+			}
+				
+			printf("%c ", p->data);
+			--count_self;
+			if (count_self == 0)
+			{
+				printf("\n");
+				count_self = count_next;
+				count_next = 0;
+			}
+		}
+	}
+}
+
+
+
+
 
 ////求二叉树的节点个数
 int BinTreeCount(BinTree *bt)

@@ -137,7 +137,7 @@ typedef struct slist
 
 ////////////////////////////////////////////////////////////////////
 //单链表的函数接口声明
-static BuyNode(ElemType x);//开辟一个节点空间并赋值
+static SListNode* _BuyNode(ElemType x);//开辟一个节点空间并赋值
 void listInit(slist *pst);//单链表序表初始化函数声明
 void slistPushBackPushBack(slist *plist, ElemType x);//尾部插入
 void slistPushFront(slist *plist, ElemType x);//头部插入

@@ -3,10 +3,8 @@
 
 #include"public.h"
 
-
 #undef ElemType
 #define ElemType char
-
 
 typedef struct BinTreeNode
 {
@@ -19,8 +17,6 @@ typedef struct BinTree
 {
 	BinTreeNode* root;
 }BinTree;
-
-
 
 
 //////////////////////////////////////////////////////////////////////
@@ -97,7 +93,6 @@ BinTreeNode* trqueueTop(trqueue *psq)
 
 #endif
 
-
 ////函数接口声明
 void BintreeInIt(BinTree *bt);
 void BinTreeCreate(BinTree* bt);
@@ -122,7 +117,6 @@ int BinTreeCount_1(BinTreeNode *t);
 int BinTreeHeight(BinTree *bt);
 int BinTreeHeight_1(BinTreeNode *t);
 
-
 void  LevelOrder_1(BinTreeNode* t);
 ////查询
 BinTreeNode* BinTreeFind(BinTree *bt,ElemType x);
@@ -138,7 +132,16 @@ BinTreeNode* _BinTreeCopy(BinTreeNode *t);
 bool BinTreeEqual(BinTree *bt1, BinTree *bt2);
 bool _BinTreeEqual(BinTreeNode *t1, BinTreeNode *t2);
 
+////摧毁二叉树
+void BinTreeDestroy(BinTree *bt);
+void _BinTreeDestroy(BinTreeNode *t);
 
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////函数接口实现
 void BinTreeInIt(BinTree *bt)
@@ -190,7 +193,62 @@ BinTreeNode* BinTreeCreatestr_1(const char* s,int *p)
 	}
 }
 
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+//递归遍历
 
+//先序遍历
+
+//void PreOrder(BinTree *bt)
+//{
+//	PreOrder_1(bt->root);
+//}
+//void PreOrder_1(BinTreeNode* t)
+//{
+//	if (t != NULL)
+//	{
+//		printf("%c ", t->data);
+//		PreOrder_1(t->leftChild);
+//		PreOrder_1(t->rightChild);
+//	}
+//	
+//}
+
+//中序遍历
+
+//void InOrder(BinTree *bt)
+//{
+//	IneOrder_1(bt->root);
+//}
+//void IneOrder_1(BinTreeNode* t)
+//{
+//	if (t != NULL)
+//	{
+//		IneOrder_1(t->leftChild);
+//		printf("%c ", t->data);
+//		IneOrder_1(t->rightChild);
+//	}
+//}
+
+//后序遍历
+
+//void PosOrder(BinTree *bt)
+//{
+//	PosOrder_1(bt->root);
+//}
+//void PosOrder_1(BinTreeNode* t)
+//{
+//	if (t != NULL)
+//	{
+//		PosOrder_1(t->leftChild);
+//		PosOrder_1(t->rightChild);
+//		printf("%c ", t->data);
+//	}
+//}
+
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+//非递归遍历
 
 //先序遍历
 void PreOrder(BinTree *bt)
@@ -201,12 +259,30 @@ void PreOrder_1(BinTreeNode* t)
 {
 	if (t != NULL)
 	{
-		printf("%c ", t->data);
-		PreOrder_1(t->leftChild);
-		PreOrder_1(t->rightChild);
+		std::stack<BinTreeNode*> st;
+		BinTreeNode* cur = t;
+		BinTreeNode* prev = nullptr;//指向当前节点的前驱节点
+		while (cur || !st.empty())
+		{
+			while (cur)
+			{
+				cout << cur->data << " ";
+				st.push(cur);
+				cur = cur->leftChild;
+			}
+			BinTreeNode* top = st.top();
+			if (top->rightChild && top->rightChild != prev)
+				cur = top->rightChild;
+			else
+			{
+				prev = top;
+				st.pop();
+			}
+				
+		}
 	}
-	
 }
+
 //中序遍历
 void InOrder(BinTree *bt)
 {
@@ -216,11 +292,24 @@ void IneOrder_1(BinTreeNode* t)
 {
 	if (t != NULL)
 	{
-		IneOrder_1(t->leftChild);
-		printf("%c ", t->data);
-		IneOrder_1(t->rightChild);
+		std::stack<BinTreeNode*> st;
+		BinTreeNode* cur = t;
+		while (cur || !st.empty())
+		{
+			while (cur)
+			{
+				st.push(cur);
+				cur = cur->leftChild;
+			}
+			BinTreeNode* top = st.top();
+			st.pop();
+			cout << top->data<<" ";
+
+			cur = top->rightChild;
+		}
 	}
 }
+
 //后序遍历
 void PosOrder(BinTree *bt)
 {
@@ -228,13 +317,41 @@ void PosOrder(BinTree *bt)
 }
 void PosOrder_1(BinTreeNode* t)
 {
+	
 	if (t != NULL)
 	{
-		PosOrder_1(t->leftChild);
-		PosOrder_1(t->rightChild);
-		printf("%c ", t->data);
+		
+		std::stack<BinTreeNode*> st;
+		BinTreeNode* cur = t;
+		BinTreeNode* prev = nullptr;//指向当前节点的前驱节点
+		while (cur || !st.empty())
+		{
+			while(cur)
+			{
+				st.push(cur);
+				cur = cur->leftChild;
+			}
+
+			BinTreeNode* top = st.top();
+			if (top->rightChild == nullptr||top->rightChild == prev)
+			{
+				cout << top->data << " ";
+				prev = top;
+				st.pop();
+			}
+			else
+			{
+				cur = top->rightChild;
+			}
+
+		}
 	}
 }
+
+
+
+
+
 
 //层次遍历
 void LevelOrder(BinTree *bt)
@@ -303,9 +420,6 @@ void _Wrapprint(BinTreeNode *t)
 		}
 	}
 }
-
-
-
 
 
 ////求二叉树的节点个数
@@ -382,7 +496,7 @@ BinTreeNode* BinTreeParent_1(BinTreeNode *t, ElemType x)
 ////拷贝
 BinTreeNode* BinTreeCopy(BinTree *bt1, BinTree *bt2)
 {
-	bt2->root = _BinTreeCopy(bt1->root);
+	return bt2->root = _BinTreeCopy(bt1->root);
 }
 BinTreeNode* _BinTreeCopy(BinTreeNode *t)
 {
@@ -418,6 +532,31 @@ bool _BinTreeEqual(BinTreeNode *t1, BinTreeNode *t2)
 	else
 		return false;
 }
+
+////摧毁二叉树
+void BinTreeDestroy(BinTree *bt)
+{
+	_BinTreeDestroy(bt->root);
+}
+
+void _BinTreeDestroy(BinTreeNode *t)
+{
+	if (t == nullptr)
+		return;
+	_BinTreeDestroy(t->leftChild);
+	_BinTreeDestroy(t->rightChild);
+
+	free(t);
+
+}
+
+
+
+
+
+
+
+
 
 
 #endif /* _TREE_H_*/

@@ -260,25 +260,20 @@ void PreOrder_1(BinTreeNode* t)
 	if (t != NULL)
 	{
 		std::stack<BinTreeNode*> st;
-		BinTreeNode* cur = t;
-		BinTreeNode* prev = nullptr;//指向当前节点的前驱节点
-		while (cur || !st.empty())
+		st.push(t);
+		while (!st.empty())
 		{
-			while (cur)
-			{
-				cout << cur->data << " ";
-				st.push(cur);
-				cur = cur->leftChild;
-			}
 			BinTreeNode* top = st.top();
-			if (top->rightChild && top->rightChild != prev)
-				cur = top->rightChild;
-			else
+			st.pop();
+			cout << top->data << " ";
+			if (top->rightChild)
 			{
-				prev = top;
-				st.pop();
+				st.push(top->rightChild);
 			}
-				
+			if(top->leftChild)
+			{
+				st.push(top->leftChild);
+			}
 		}
 	}
 }
